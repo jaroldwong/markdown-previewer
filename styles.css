@@ -1,0 +1,12 @@
+#root {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.container {
+    display: flex;
+}
+
+.preview {
+    padding: 0 20px;
+}
