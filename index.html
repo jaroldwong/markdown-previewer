@@ -12,30 +12,66 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
-      var TextboxComponent = React.createClass({
+      var TextComponent = React.createClass({
           getInitialState: function() {
             return {
-              text: "# Type in Markdown Here...",
+              text: `
+Heading
+=======
+
+Sub-heading
+-----------
+ 
+### Another deeper heading
+ 
+Paragraphs are separated
+by a blank line.
+
+Leave 2 spaces at the end of a line to do a  
+line break
+
+Text attributes *italic*, **bold**, 
+\`monospace\`, ~~strikethrough~~ .
+
+Shopping list:
+
+  * apples
+  * oranges
+  * pears
+
+Numbered list:
+
+  1. apples
+  2. oranges
+  3. pears
+
+The rain---not the reign---in
+Spain.
+
+ *[Herman Fassett](https://freecodecamp.com/hermanfassett)*`,
             }
+          },
+          updateValue: function() {
+            var value = document.getElementById('text').value
+            this.setState({
+              text: value
+            })
+          },
+          renderMarkup: function(rawString) {
+            var markup = marked(rawString, { sanitize: true });
+            return { __html: markup }
           },
           render: function() {
               return (
                   <div className="container">
-                      <textarea id="text" rows="50" cols="75" onChange={this.updatePreview}></textarea>
-                      <div className="preview" dangerouslySetInnerHTML= {this.state.md} />
+                      <textarea id="text" rows="50" cols="75" onChange={this.updateValue} defaultValue={this.state.text}></textarea>
+                      <div className="preview" dangerouslySetInnerHTML= {this.renderMarkup(this.state.text)} />
                   </div>
               );
-          },
-          updatePreview: function() {
-            var string = document.getElementById('text').value;
-            var mdString = marked(string);
-            this.setState({
-              md: {__html: mdString}
-            })
-          },
+          }
       });
 
-      ReactDOM.render(<TextboxComponent />, document.getElementById('root'));
+      ReactDOM.render(<TextComponent />, document.getElementById('root'));
     </script>
   </body>
 </html>
